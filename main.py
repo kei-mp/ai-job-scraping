@@ -2,6 +2,7 @@ import pickle
 import os
 import time
 import re
+import random
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -27,6 +28,11 @@ def load_cookies(driver, file_path):
     except Exception as e:
         print(f"Error loading cookies: {e}")
         return False
+
+def human_wait():
+    wait_time = random.uniform(3, 8)
+    print(f"Waiting for {wait_time:.2f} seconds...")
+    time.sleep(wait_time)
 
 # --- Main Script Logic ---
 
@@ -73,6 +79,34 @@ if job_urls:
 else:
     print("No job view URLs found matching the pattern.")
 print("---------------------------------")
+
+# --- Visit Each Unique URL and Extract Description ---
+
+print("\n--- Extracting Job Descriptions ---")
+if unique_job_urls:
+    for i, url in enumerate(unique_job_urls):
+        print(f"Visiting URL {i+1}/{len(unique_job_urls)}: {url}")
+        try:
+            driver.get(url)
+
+            # Wait for the job description element to be present
+            description_element = WebDriverWait(driver, 15).until(
+                EC.presence_of_element_located((By.CSS_SELECTOR, "article.jobs-description__container"))
+            )
+
+            # Get the outer HTML of the description element
+            description_html = description_element.get_attribute('outerHTML')
+
+            print(f"--- Description for {url} ---")
+            print(description_html)
+            print("---------------------------")
+
+        except Exception as e:
+            print(f"An error occurred while processing {url}: {e}")
+
+        human_wait()
+else:
+    print("No unique URLs to visit.")
 
 time.sleep(10)
 driver.quit()
