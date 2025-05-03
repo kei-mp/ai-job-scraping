@@ -1,6 +1,7 @@
 import pickle
 import os
 import time
+import re
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -50,7 +51,28 @@ else:
     input("Press Enter here after you have successfully logged in...")
     save_cookies(driver, COOKIES_FILE)
 
-driver.get("https://www.linkedin.com/my-items/saved-jobs/?start=160")
+print("Navigating to saved jobs page...")
+driver.get("https://www.linkedin.com/my-items/saved-jobs/")
+
+try:
+    WebDriverWait(driver, 20).until(
+        EC.presence_of_element_located((By.CSS_SELECTOR, "div.global-nav__content"))
+    )
+    print("Saved jobs page loaded.")
+except:
+    print("Timed out waiting for saved jobs list to load. Proceeding with available HTML.")
+
+html_content = driver.page_source
+pattern = re.compile(r'<a.*?href\s*=\s*["\'](https://www.linkedin.com/jobs/view/\d+/).*?["\'].*?>')
+job_urls = pattern.findall(html_content)
+
+print("\n--- Extracted LinkedIn Job URLs ---")
+if job_urls:
+    for url in job_urls:
+        print(url)
+else:
+    print("No job view URLs found matching the pattern.")
+print("---------------------------------")
 
 time.sleep(10)
 driver.quit()
