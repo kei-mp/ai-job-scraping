@@ -17,8 +17,8 @@ COOKIES_FILE = "linkedin_cookies.pkl"
 SKILLS_OUTPUT_FILE = "job_skills.txt"
 # Define the OpenAI prompt
 OPENAI_SKILLS_PROMPT = """Pull out the technical skills from this job description. List only the name of the skill without any unnecessary words. Wrap the list of skills in a <skills></skills> block so it can be parsed:
-
 {job_description_html}""" # Placeholder for job description HTML
+JOB_LIST_URL = "https://www.linkedin.com/my-items/saved-jobs/?start=160"
 
 # --- File Handling for Processed URLs ---
 
@@ -143,7 +143,7 @@ else:
 
 # --- Navigate to Saved Jobs (remains the same) ---
 print("Navigating to saved jobs page...")
-driver.get("https://www.linkedin.com/my-items/saved-jobs/")
+driver.get(JOB_LIST_URL)
 
 try:
     WebDriverWait(driver, 20).until(
