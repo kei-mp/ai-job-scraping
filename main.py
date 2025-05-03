@@ -65,7 +65,7 @@ except:
 html_content = driver.page_source
 pattern = re.compile(r'<a.*?href\s*=\s*["\'](https://www.linkedin.com/jobs/view/\d+/).*?["\'].*?>')
 job_urls = pattern.findall(html_content)
-
+unique_job_urls = set(job_urls)
 print("\n--- Extracted LinkedIn Job URLs ---")
 if job_urls:
     for url in job_urls:
