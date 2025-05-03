@@ -87,7 +87,8 @@ Before you run the script, ensure you have the following:
 ## Output
 
 The script will create or append to a file named `job_skills.txt` in the same directory. Each entry in the file will follow this format:
----
+
+```
 URL: https://www.linkedin.com/jobs/view/4140384354/
 Title: Principal Air Defense Systems Engineer - Mission Systems Integration
 Response:
@@ -107,7 +108,7 @@ MATLAB
 Model Based System Engineering (MBSE)
 INCOSE standards
 </skills>
----
+```
 
 The OpenAI response block will contain the list of technical skills extracted, wrapped in `<skills>...</skills>` tags as per the prompt.
 
